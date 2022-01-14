@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="stylesheets.css"/>
+    <title>mrsksh/cookie-consent</title>
+    <script>
+    // Define dataLayer and the gtag function.
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    
+    // Default ad_storage to 'denied'.
+    gtag('consent', 'default', {
+        'ad_storage': 'denied',
+        'analytics_storage': 'denied'
+    });
+    </script>
+    <!-- Google Tag Manager -->
+    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','GTM-xxxxxxx');</script>
+    <!-- End Google Tag Manager -->
+</head>
+<body>
+    <!-- Google Tag Manager (noscript) -->
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-xxxxxxx" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+    <!-- End Google Tag Manager (noscript) -->
+    <button onclick="consentDenied()" class="cookie-consent-denied-btn">»こちらをクリックすることで拒否することができます。</button>
+    <div id="cookie-consent">
+        <div id="cookie-consent-body">
+            <p>当サイトの内容の改善・分析・収益化のため、Cookieを利用したツールの利用へのご理解、ご協力をお願い致します。<a href="https://example.com/privacy-policy/">詳しくはこちら»</a></p>
+            <button onclick="consentGranted()" class="cookie-consent-allow-btn">承 認</button><button onclick="consentLater()" class="cookie-consent-later-btn">あとで</button>
+        </div>
+        <div id="cookie-consent-allow-message">ご協力ありがとうございます！設定の変更は<a href="https://example.com/privacy-policy/">プライパシーポリシーページ</a>からいつでも可能です。</div>
+        <div id="cookie-consent-later-message">ありがとうございます。また後ほどよろしくお願い致します！</div>
+    </div>
+
+    <script>
+    if ( navigator.cookieEnabled ) {
+        document.getElementById("cookie-consent").style.display = "block";
+        document.getElementById("cookie-consent-allow-message").style.display = "none";
+        document.getElementById("cookie-consent-later-message").style.display = "none";
+      
+        function consentGranted() {
+            var expires = new Date();
+            expires.setFullYear( expires.getFullYear() + 2 ); // 2年間有効
+    
+            document.cookie = "_cookieConsent=allow; Path=/; expires=" + expires.toUTCString();
+            document.getElementById("cookie-consent-body").style.display = "none";
+            document.getElementById("cookie-consent-allow-message").style.display = "block";
+            gtag('consent', 'update', {
+                'ad_storage': 'granted',
+                'analytics_storage': 'granted'
+            });
+            setTimeout(() => {
+                document.getElementById("cookie-consent").style.display = "none";
+                document.location.reload();
+            }, 1800);
+        }
+    
+        function consentLater() {
+            var now     = new Date();
+            var limit   = new Date( now.getFullYear(), now.getMonth(), now.getDate() + 1 );
+            now.setTime( now.getTime() + ( limit - now ) );
+            document.cookie = "_cookieConsent=later; Path=/; expires=" + now; // 当日中有効
+    
+            document.getElementById("cookie-consent-body").style.display = "none";
+            document.getElementById("cookie-consent-later-message").style.display = "block";
+            setTimeout(() => {
+                document.getElementById("cookie-consent").style.display = "none";
+                document.location.reload();
+            }, 1800);
+        }
+
+        function consentDenied() {
+            gtag('consent', 'update', {
+                'ad_storage': 'denied',
+                'analytics_storage': 'denied'
+            });
+            gtag('set', 'ads_data_redaction', true);
+            
+            var cookies = document.cookie;
+            var cookiesArray = cookies.split(';');
+            for(var c of cookiesArray){
+                var cArray = c.split('=');
+                var pattern = /(_ga|__gads)/; // 正規表現の条件
+                if( cArray[0].match(pattern) ) { // keyになる文字列が正規表現にマッチしたら
+                    document.cookie = cArray[0] + '=; Path=/; Domain=.example.com; Expires=Thu, 01 Jan 1970 00:00:00 UTC';
+                }
+            }
+            document.cookie = "_cookieConsent=; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 UTC";
+            alert('当サイト用のCookieの削除を行いました。');
+        }
+    }
+    </script>
+</body>
+</html>

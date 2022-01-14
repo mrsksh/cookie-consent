@@ -1,0 +1,35 @@
+#cookie-consent {
+  background: rgba(0, 0, 0, 0.8);
+  bottom: 0;
+  color: #fff;
+  display: none;
+  font-size: 0.8em;
+  line-height: 1.25;
+  padding: 1rem;
+  position: fixed;
+  text-align: center;
+  width: 100%;
+  z-index: 2;
+}
+#cookie-consent p {
+  margin-bottom: 1em;
+}
+#cookie-consent a {
+  color: #fff;
+}
+#cookie-consent button {
+  background-color: transparent;
+  border: 1px solid #ccc;
+  border-radius: 0.5em;
+  color: #fff;
+  display: inline-block;
+  font-size: 0.8em;
+  padding: 1em 2em;
+}
+#cookie-consent button + button {
+  margin-left: 1em;
+}
+#cookie-consent .cookie-consent-allow-btn {
+  background-color: #ccc;
+  color: #000;
+}
